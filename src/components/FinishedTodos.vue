@@ -2,8 +2,9 @@
     <div class="todolist">
         <h1>Already Done</h1>
         <ul id="done-items" class="list-unstyled">
-            <li>Some item
-                <button class="remove-item btn btn-default btn-xs pull-right">
+            <li v-for='todo in todoList' :key='todo.id'> 
+              <span class="todo-item" @click='markTodoUncomplete(todo.id)'>{{todo.title}}</span>
+                <button class="remove-item btn btn-default btn-xs pull-right" @click='deleteTodo(todo.id)'>
                     <i class="fa fa-trash"></i>
                 </button>
             </li>
@@ -14,6 +15,20 @@
 
 <script>
 export default {
- name: 'FinishedTodos'
-}
+  name: "FinishedTodos",
+  props: {
+    todoList: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    deleteTodo(id) {
+      this.$emit("delete-todo", { id });
+    },
+    markTodoUncomplete(id) {
+      this.$emit("readd-todo", { id });
+    },
+  },
+};
 </script>

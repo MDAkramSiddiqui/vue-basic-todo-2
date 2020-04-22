@@ -1,27 +1,28 @@
 <template>
     <ul id="sortable" class="list-unstyled">
-        <li class="ui-state-default">
+        <li class="ui-state-default" v-for="todo in todoList" :key='todo.id'>
             <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="" />Take out the trash</label>
-            </div>
-        </li>
-        <li class="ui-state-default">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="" />Buy bread</label>
-            </div>
-        </li>
-        <li class="ui-state-default">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="" />Teach penguins to fly</label>
+                <label class="todo-item">
+                    <input type="checkbox" value="" @click='markTodoComplete(todo.id)'/> {{ todo.title }} </label>
             </div>
         </li>
     </ul>
 </template>
 <script>
 export default {
-    name: 'TodoListView'
-}
+  name: "TodoListView",
+  props: {
+    todoList: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    markTodoComplete(id) {
+      this.$emit("complete-todo", {
+        id,
+      });
+    },
+  },
+};
 </script>

@@ -6,76 +6,112 @@
                     <h1>Todos</h1>
                     <AddTodo/>
                     <hr>
-                    <TodoListView/>
+                    <TodoListView :todoList='uncompletedTodos' @complete-todo='markTodoComplete'/>
                     <div class="todo-footer">
                         <strong>
-                            <span class="count-todos">2</span>
+                            <span class="count-todos"> {{ uncompletedTodos.length }} </span>
                         </strong> Items Left
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <FinishedTodos/>
+                <FinishedTodos :todoList='completedTodos' @delete-todo='deleteTodo' @readd-todo='markTodoUncomplete'/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import TodoListView from './components/TodoListView.vue';
-import AddTodo from './components/AddTodo.vue';
-import FinishedTodos from './components/FinishedTodos';
+import TodoListView from "./components/TodoListView.vue";
+import AddTodo from "./components/AddTodo.vue";
+import FinishedTodos from "./components/FinishedTodos";
+import { todos } from "./seed";
 export default {
-    name: 'app',
-    components:{
-        TodoListView,
-        AddTodo,
-        FinishedTodos
-    }
+  name: "app",
+  data() {
+    return {
+      todos,
+    };
+  },
+  components: {
+    TodoListView,
+    AddTodo,
+    FinishedTodos,
+  },
+  methods: {
+    // addNewTodo(event) {
+    //   this.todos.push(event);
+    // },
+    markTodoComplete(event) {
+      const index = this.todos.findIndex((el) => el.id === event.id);
+      this.todos[index].completed = true;
+    },
+    markTodoUncomplete(event) {
+      const index = this.todos.findIndex((el) => el.id === event.id);
+      this.todos[index].completed = false;
+    },
+    deleteTodo(event) {
+      const index = this.todos.findIndex((el) => el.id === event.id);
+      this.todos.splice(index, 1);
+    },
+  },
+  computed: {
+    completedTodos() {
+      return this.todos.filter((el) => el.completed === true);
+    },
+    uncompletedTodos() {
+      return this.todos.filter((el) => el.completed === false);
+    },
+  },
 };
 </script>
 
 <style>
 body {
-	background-color: #eeeeee;
+  background-color: #eeeeee;
 }
+
+.todo-item {
+  cursor: pointer;
+}
+
 .todolist {
-	background-color: #fff;
-	padding: 20px 20px 10px 20px;
-	margin-top: 30px;
+  background-color: #fff;
+  padding: 20px 20px 10px 20px;
+  margin-top: 30px;
 }
 .todolist h1 {
-	margin: 0;
-	padding-bottom: 20px;
-	text-align: center;
+  margin: 0;
+  padding-bottom: 20px;
+  text-align: center;
 }
 .form-control {
-	border-radius: 0;
+  border-radius: 0;
 }
 li.ui-state-default {
-	background: #fff;
-	border: none;
-	border-bottom: 1px solid #ddd;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid #ddd;
 }
 
 li.ui-state-default:last-child {
-	border-bottom: none;
+  border-bottom: none;
 }
 
 .todo-footer {
-	background-color: #f4fce8;
-	margin: 0 -20px -10px -20px;
-	padding: 10px 20px;
+  background-color: #f4fce8;
+  margin: 0 -20px -10px -20px;
+  padding: 10px 20px;
 }
 #done-items li {
-	padding: 10px 0;
-	border-bottom: 1px solid #ddd;
-	text-decoration: line-through;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  text-decoration: line-through;
 }
 #done-items li:last-child {
-	border-bottom: none;
+  border-bottom: none;
 }
 #checkAll {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 </style>
