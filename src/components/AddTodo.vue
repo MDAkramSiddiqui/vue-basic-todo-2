@@ -4,6 +4,7 @@
 
 <script>
 import { todos } from "./../seed";
+import EventBus from "./../eventBus";
 export default {
   name: "AddTodo",
   data() {
@@ -13,18 +14,19 @@ export default {
   },
   methods: {
     saveTodo(title) {
-      todos.push({
-        title,
+      // todos.push({
+      //   title,
+      //   id: Date.now().toString(),
+      //   completed: false,
+      // });
+      // this.title = "";
+      // this.title = "";
+      EventBus.$emit("add-todo", {
         id: Date.now().toString(),
+        title,
         completed: false,
       });
       this.title = "";
-      // this.title = "";
-      // this.$emit("add-todo", {
-      //   id: 1234,
-      //   title,
-      //   completed: false,
-      // });
     },
   },
 };

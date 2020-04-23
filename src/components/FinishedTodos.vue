@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import EventBus from "./../eventBus";
 export default {
   name: "FinishedTodos",
   props: {
@@ -24,10 +25,10 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      this.$emit("delete-todo", { id });
+      EventBus.$emit("delete-todo", { id });
     },
     markTodoUncomplete(id) {
-      this.$emit("readd-todo", { id });
+      EventBus.$emit("readd-todo", { id });
     },
   },
 };

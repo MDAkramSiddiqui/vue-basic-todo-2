@@ -9,6 +9,7 @@
     </ul>
 </template>
 <script>
+import EventBus from "./../eventBus";
 export default {
   name: "TodoListView",
   props: {
@@ -19,7 +20,7 @@ export default {
   },
   methods: {
     markTodoComplete(id) {
-      this.$emit("complete-todo", {
+      EventBus.$emit("complete-todo", {
         id,
       });
     },

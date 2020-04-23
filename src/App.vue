@@ -6,7 +6,7 @@
                     <h1>Todos</h1>
                     <AddTodo/>
                     <hr>
-                    <TodoListView :todoList='uncompletedTodos' @complete-todo='markTodoComplete'/>
+                    <TodoListView :todoList='uncompletedTodos' />
                     <div class="todo-footer">
                         <strong>
                             <span class="count-todos"> {{ uncompletedTodos.length }} </span>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <FinishedTodos :todoList='completedTodos' @delete-todo='deleteTodo' @readd-todo='markTodoUncomplete'/>
+                <FinishedTodos :todoList='completedTodos' />
             </div>
         </div>
     </div>
@@ -26,6 +26,7 @@ import TodoListView from "./components/TodoListView.vue";
 import AddTodo from "./components/AddTodo.vue";
 import FinishedTodos from "./components/FinishedTodos";
 import { todos } from "./seed";
+import EventBus from "./eventBus";
 export default {
   name: "app",
   data() {
@@ -38,10 +39,16 @@ export default {
     AddTodo,
     FinishedTodos,
   },
+  mounted() {
+    EventBus.$on("add-todo", (event) => this.addNewTodo(event));
+    EventBus.$on("delete-todo", (event) => this.deleteTodo(event));
+    EventBus.$on("complete-todo", (event) => this.markTodoComplete(event));
+    EventBus.$on("readd-todo", (event) => this.markTodoUncomplete(event));
+  },
   methods: {
-    // addNewTodo(event) {
-    //   this.todos.push(event);
-    // },
+    addNewTodo(event) {
+      this.todos.push(event);
+    },
     markTodoComplete(event) {
       const index = this.todos.findIndex((el) => el.id === event.id);
       this.todos[index].completed = true;
