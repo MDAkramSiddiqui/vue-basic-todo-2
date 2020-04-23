@@ -25,49 +25,23 @@
 import TodoListView from "./components/TodoListView.vue";
 import AddTodo from "./components/AddTodo.vue";
 import FinishedTodos from "./components/FinishedTodos";
-import { todos } from "./seed";
-import EventBus from "./eventBus";
+
 export default {
   name: "app",
-  data() {
-    return {
-      todos,
-    };
-  },
+
   components: {
     TodoListView,
     AddTodo,
     FinishedTodos,
   },
-  mounted() {
-    EventBus.$on("add-todo", (event) => this.addNewTodo(event));
-    EventBus.$on("delete-todo", (event) => this.deleteTodo(event));
-    EventBus.$on("complete-todo", (event) => this.markTodoComplete(event));
-    EventBus.$on("readd-todo", (event) => this.markTodoUncomplete(event));
-  },
-  methods: {
-    addNewTodo(event) {
-      this.todos.push(event);
-    },
-    markTodoComplete(event) {
-      const index = this.todos.findIndex((el) => el.id === event.id);
-      this.todos[index].completed = true;
-    },
-    markTodoUncomplete(event) {
-      const index = this.todos.findIndex((el) => el.id === event.id);
-      this.todos[index].completed = false;
-    },
-    deleteTodo(event) {
-      const index = this.todos.findIndex((el) => el.id === event.id);
-      this.todos.splice(index, 1);
-    },
-  },
   computed: {
     completedTodos() {
-      return this.todos.filter((el) => el.completed === true);
+      return this.$store.getters.getTodos.filter((el) => el.completed === true);
     },
     uncompletedTodos() {
-      return this.todos.filter((el) => el.completed === false);
+      return this.$store.getters.getTodos.filter(
+        (el) => el.completed === false
+      );
     },
   },
 };

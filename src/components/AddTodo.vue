@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import { todos } from "./../seed";
-import EventBus from "./../eventBus";
 export default {
   name: "AddTodo",
   data() {
@@ -14,17 +12,10 @@ export default {
   },
   methods: {
     saveTodo(title) {
-      // todos.push({
-      //   title,
-      //   id: Date.now().toString(),
-      //   completed: false,
-      // });
-      // this.title = "";
-      // this.title = "";
-      EventBus.$emit("add-todo", {
+      this.$store.dispatch("addTodo", {
         id: Date.now().toString(),
-        title,
         completed: false,
+        title,
       });
       this.title = "";
     },
